@@ -1,0 +1,90 @@
+model:
+  arch: mini_gpt4_llama_v2
+  model_type: minigpt4_video
+  llama_model: "meta-llama/Llama-2-7b-chat-hf"
+  
+  # === 核心策略 ===
+  freeze_vit: True
+  freeze_qformer: True
+  max_txt_len: 160 #256
+  max_context_len: 1024 #3600
+  low_resource: True
+  image_size: 224
+  end_sym: "</s>"
+  
+  # === 权重加载 ===
+  # 这里依然要指向 Stage 1 的权重
+  ckpt: "checkpoints/image_llama2_checkpoint.pth" 
+  
+  use_grad_checkpoint: True
+  chat_template: True
+  
+  # === LoRA ===
+  lora_r: 64
+  lora_alpha: 16
+  lora_target_modules : ["q_proj","v_proj"]
+  lora_dropout: 0.05
+  
+  length: 50
+  use_grad_checkpoint_llm: True
+  
+  architectures: ["MiniGPT4_Video"]
+  device: "cuda"
+  drop_path_rate: 0 
+  img_size: 224
+  num_query_token: 32
+  prompt: ""
+  torch_dtype: "float32"
+  vit_precision: "fp16"
+  vit_model: "eva_clip_g"
+  remove_template: false
+  prompt_path: ""
+  token_pooling: True
+
+datasets:
+  # === 这里变得非常干净，只保留 cmd_video ===
+  cmd_video:
+    # 路径已经移到 default.yaml 了，这里不需要写了
+    
+    # 显存优化：batch_size 改为 2
+    batch_size: 1
+    
+    vis_processor:
+      train:
+        name: "blip2_image_train"
+        image_size: 224
+        n_frms: 4
+    text_processor:
+      train:
+        name: "blip_caption"
+    sample_ratio: 1
+
+# === webvid 已经被彻底删除 ===
+
+run:
+  task: image_text_pretrain
+  
+  lr_sched: "linear_warmup_cosine_lr"
+  init_lr: 1e-4
+  min_lr: 8e-5
+  warmup_lr: 1e-6
+  weight_decay: 0.05
+  
+  max_epoch: 5
+  num_workers: 4
+  warmup_steps: 10
+  iters_per_epoch: 10
+
+  seed: 42
+  output_dir: "training_output/cmd_stage2/llama2"
+
+  amp: True
+  resume_ckpt_path: null
+
+  evaluate: False
+  train_splits: ["train"]
+
+  device: "cuda"
+  world_size: 1
+  dist_url: "env://"
+  distributed: True

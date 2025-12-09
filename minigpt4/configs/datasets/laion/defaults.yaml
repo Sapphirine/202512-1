@@ -1,0 +1,5 @@
+datasets:
+  laion:
+    data_type: images
+    build_info:
+      storage: "/home/jupyter/MiniGPT4-video/datasets/laion_subset/packed/00000.tar"
