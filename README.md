@@ -215,6 +215,8 @@ Ablation on Token Pooling shows:
 - **Data scale**: Due to hardware constraints, all three stages are trained on relatively small subsets (1000 / 300 / 3359 samples). Larger‑scale training is left for future work.
 
 Planned future directions include:
+As our original plan:
+<img width="1324" height="1032" alt="image" src="https://github.com/user-attachments/assets/2962a975-14e1-4517-835a-c610b74bee5c" />
 
 - Completing the end‑to‑end RAG pipeline for long‑video QA.
 - Integrating agent‑based coordination and automatic evaluation.
