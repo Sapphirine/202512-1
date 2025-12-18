@@ -103,6 +103,7 @@ We adopt a curriculum learning strategy where **each stage's checkpoint initiali
   - `length = 20` (controls effective video clip length)
 - **Input checkpoint**: `stage2_video_pretrain.pth`  
 - **Output checkpoint**: `stage3_video_instruct_final.pth` (used for inference)
+<img width="1916" height="651" alt="image" src="https://github.com/user-attachments/assets/ce72fef4-48e7-4173-aae3-6d2bf7cf978f" />
 
 ---
 
